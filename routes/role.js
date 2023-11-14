@@ -3,6 +3,7 @@ import {
   createRole,
   getAllRoles,
   updateRole,
+  deleteRole,
 } from "../controllers/role.controller.js";
 
 const router = express.Router();
@@ -15,5 +16,8 @@ router.put("/update/:id", updateRole);
 
 // Get all roles from DB
 router.get("/getAll", getAllRoles);
+
+// Delete a role from DB
+router.delete("/deleteRole/:id", deleteRole);
 
 export default router;
