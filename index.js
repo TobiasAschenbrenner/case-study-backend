@@ -6,6 +6,9 @@ import roleRoute from "./routes/role.js";
 const app = express();
 dotenv.config();
 
+app.use(express.json());
+app.use("/api/role", roleRoute);
+
 // DB Connection
 const connectMongoDB = async () => {
   try {
@@ -15,8 +18,6 @@ const connectMongoDB = async () => {
     throw error;
   }
 };
-
-app.use("/api/role", (roleRoute) => {});
 
 app.listen(8800, () => {
   connectMongoDB();
