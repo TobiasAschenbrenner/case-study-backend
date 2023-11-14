@@ -31,3 +31,12 @@ export const updateRole = async (req, res, next) => {
     return res.status(500).send("Internal server error!");
   }
 };
+
+export const getAllRoles = async (req, res, next) => {
+  try {
+    const roles = await Role.find({});
+    return res.status(200).send(roles);
+  } catch (error) {
+    return res.status(500).send("Internal server error!");
+  }
+};

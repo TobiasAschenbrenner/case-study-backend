@@ -1,5 +1,9 @@
 import express from "express";
-import { createRole, updateRole } from "../controllers/role.controller.js";
+import {
+  createRole,
+  getAllRoles,
+  updateRole,
+} from "../controllers/role.controller.js";
 
 const router = express.Router();
 
@@ -8,5 +12,8 @@ router.post("/create", createRole);
 
 // Update a role in DB
 router.put("/update/:id", updateRole);
+
+// Get all roles from DB
+router.get("/getAll", getAllRoles);
 
 export default router;
