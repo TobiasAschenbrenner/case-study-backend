@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const UserSchema = mongoose.Schema(
   {
@@ -41,9 +41,16 @@ const UserSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    // Will add roles later
+
+    roles: {
+      type: [Schema.Types.ObjectId],
+      required: true,
+      ref: "Role",
+    },
   },
   {
     timestamps: true,
   }
 );
+
+export default mongoose.model("User", UserSchema);
