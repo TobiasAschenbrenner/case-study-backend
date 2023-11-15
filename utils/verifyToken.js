@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import { CreateError } from "./error.js";
-import { CreateSuccess } from "./success.js";
 
 export const verifyToken = (req, res, next) => {
   const token = req.cookies.access_token;
@@ -14,14 +13,14 @@ export const verifyToken = (req, res, next) => {
 
 export const verifyUser = (req, res, next) => {
   verifyToken(req, res, () => {
-    if (req.user.id === req.params.id || req.user.isAdmin) next();
+    if (req.user.id === req.params.id || req.user.isAdmin) return next();
     return next(CreateError(403, "Access denied, invalid token!"));
   });
 };
 
 export const verifyAdmin = (req, res, next) => {
   verifyToken(req, res, () => {
-    if (req.user.isAdmin) next();
+    if (req.user.isAdmin) return next();
     return next(CreateError(403, "Access denied, invalid token!"));
   });
 };
