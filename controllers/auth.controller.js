@@ -2,6 +2,7 @@ import Role from "../models/Role.js";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import { CreateSuccess } from "../utils/success.js";
+import { CreateError } from "../utils/error.js";
 
 export const register = async (req, res, next) => {
   const role = await Role.find({ role: "User" });
@@ -22,14 +23,15 @@ export const register = async (req, res, next) => {
 export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    if (!user) return res.status(404).send("Invalid credentials!");
+    if (!user) return next(CreateError(404, "Invalid credentials!"));
     const isPasswordCorrect = await bcrypt.compare(
       req.body.password,
       user.password
     );
-    if (!isPasswordCorrect) return res.status(400).send("Invalid credentials!");
+    if (!isPasswordCorrect)
+      return next(CreateError(400, "Invalid credentials!"));
     return next(CreateSuccess(200, "Login successful!"));
   } catch (error) {
-    return res.status(500).send("Internal server error!");
+    return next(CreateError(500, "Internal server error!"));
   }
 };
