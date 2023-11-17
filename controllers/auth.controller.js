@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { CreateSuccess } from "../utils/success.js";
 import { CreateError } from "../utils/error.js";
+import nodemailer from "nodemailer";
 import UserToken from "../models/UserToken.js";
 
 export const register = async (req, res, next) => {
@@ -72,13 +73,16 @@ export const registerAdmin = async (req, res, next) => {
 
 export const sendEmail = async (req, res, next) => {
   const email = req.body.email;
+
   const user = await User.findOne({
     email: { $regex: "^" + email + "$", $options: "i" },
   });
+
   if (!user) return next(CreateError(404, "User not found!"));
   const payload = {
     email: user.email,
   };
+
   const expiryTime = 600;
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: expiryTime,
@@ -87,5 +91,44 @@ export const sendEmail = async (req, res, next) => {
   const newToken = new UserToken({
     userId: user._id,
     token: token,
+  });
+
+  const mailTransporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.AUTH_USER,
+      pass: process.env.AUTH_PASS,
+    },
+  });
+
+  let mailDetails = {
+    from: process.env.AUTH_USER,
+    to: email,
+    subject: "Password Reset",
+    html: `
+            <html>
+              <head>
+                <title>Password Reset Request</title>
+              </head>
+              <body>
+                <h1>Password Reset Request</h1>
+                <p>Hi ${user.firstName} ${user.lastName}</p>
+                <h3>Please click on the link below to reset your password</h3>
+                <a href=${process.env.LIVE_URL}/reset-password/${token}><button style="background-color: #4CAF50; color: white; padding: 14px; 20px; border: none; cursor: pointer; border-radius: 4px;">Reset Password</button></a>
+                <p>Thank you</p>
+                <p>Tobias Aschenbrenner</p>
+                </body>
+            </html>
+    `,
+  };
+
+  mailTransporter.sendMail(mailDetails, async (err, data) => {
+    if (err) {
+      console.log(err);
+      return next(CreateError(500, "Internal server error!"));
+    } else {
+      await newToken.save();
+      return next(CreateSuccess(200, "Email sent successfully!"));
+    }
   });
 };
