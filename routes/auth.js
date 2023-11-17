@@ -3,6 +3,7 @@ import {
   login,
   register,
   registerAdmin,
+  sendEmail,
 } from "../controllers/auth.controller.js";
 
 const router = express.Router();
@@ -18,6 +19,6 @@ router.post("/login", login);
 router.post("/register-admin", registerAdmin);
 
 // send reset password email
-router.post("/send-email");
+router.post("/send-email", sendEmail);
 
 export default router;

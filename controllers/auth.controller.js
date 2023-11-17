@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { CreateSuccess } from "../utils/success.js";
 import { CreateError } from "../utils/error.js";
+import UserToken from "../models/UserToken.js";
 
 export const register = async (req, res, next) => {
   const role = await Role.find({ role: "User" });
@@ -67,4 +68,24 @@ export const registerAdmin = async (req, res, next) => {
   });
   await newUser.save();
   return next(CreateSuccess(200, "Admin created successfully!"));
+};
+
+export const sendEmail = async (req, res, next) => {
+  const email = req.body.email;
+  const user = await User.findOne({
+    email: { $regex: "^" + email + "$", $options: "i" },
+  });
+  if (!user) return next(CreateError(404, "User not found!"));
+  const payload = {
+    email: user.email,
+  };
+  const expiryTime = 600;
+  const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    expiresIn: expiryTime,
+  });
+
+  const newToken = new UserToken({
+    userId: user._id,
+    token: token,
+  });
 };
