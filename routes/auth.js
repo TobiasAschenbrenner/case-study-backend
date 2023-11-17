@@ -3,6 +3,7 @@ import {
   login,
   register,
   registerAdmin,
+  resetPassword,
   sendEmail,
 } from "../controllers/auth.controller.js";
 
@@ -20,5 +21,8 @@ router.post("/register-admin", registerAdmin);
 
 // send reset password email
 router.post("/send-email", sendEmail);
+
+// reset password
+router.post("/reset-password", resetPassword);
 
 export default router;
