@@ -114,7 +114,7 @@ export const sendEmail = async (req, res, next) => {
                 <h1>Password Reset Request</h1>
                 <p>Hi ${user.firstName} ${user.lastName}</p>
                 <h3>Please click on the link below to reset your password</h3>
-                <a href=${process.env.LIVE_URL}/reset-password/${token}><button style="background-color: #4CAF50; color: white; padding: 14px; 20px; border: none; cursor: pointer; border-radius: 4px;">Reset Password</button></a>
+                <a href=${process.env.LIVE_URL}/reset/${token}><button style="background-color: #4CAF50; color: white; padding: 14px; 20px; border: none; cursor: pointer; border-radius: 4px;">Reset Password</button></a>
                 <p>Thank you</p>
                 <p>Tobias Aschenbrenner</p>
                 </body>
