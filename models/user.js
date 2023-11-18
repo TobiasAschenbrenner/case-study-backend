@@ -35,8 +35,7 @@ const UserSchema = mongoose.Schema(
     profilePicture: {
       type: String,
       required: false,
-      default:
-        "https://i.pinimg.com/originals/b4/c3/c8/b4c3c8b1f1d66144522ff008ddf1c77e.jpg",
+      default: "https://picsum.photos/200",
     },
     isAdmin: {
       type: Boolean,
