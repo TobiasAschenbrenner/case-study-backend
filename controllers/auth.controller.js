@@ -106,19 +106,19 @@ export const sendEmail = async (req, res, next) => {
     to: email,
     subject: "Password Reset",
     html: `
-            <html>
-              <head>
-                <title>Password Reset Request</title>
-              </head>
-              <body>
-                <h1>Password Reset Request</h1>
-                <p>Hi ${user.firstName} ${user.lastName}</p>
-                <h3>Please click on the link below to reset your password</h3>
-                <a href=${process.env.LIVE_URL}/reset/${token}><button style="background-color: #4CAF50; color: white; padding: 14px; 20px; border: none; cursor: pointer; border-radius: 4px;">Reset Password</button></a>
-                <p>Thank you</p>
+        <html>
+            <head>
+                <title>Anfrage zur Passwortzurücksetzung</title>
+            </head>
+            <body>
+                <h1>Anfrage zur Passwortzurücksetzung</h1>
+                <p>Hallo ${user.firstName} ${user.lastName},</p>
+                <h3>Bitte klicken Sie auf den unten stehenden Link, um Ihr Passwort zurückzusetzen</h3>
+                <a href=${process.env.LIVE_URL}/reset/${token}><button style="background-color: #4CAF50; color: white; padding: 14px; 20px; border: none; cursor: pointer; border-radius: 4px;">Passwort Zurücksetzen</button></a>
+                <p>Vielen Dank</p>
                 <p>Tobias Aschenbrenner</p>
-                </body>
-            </html>
+            </body>
+        </html>
     `,
   };
 
